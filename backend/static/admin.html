@@ -1,29 +1,90 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin - Documents</title>
+  <title>Document Management - Admin Panel</title>
   <link rel="stylesheet" href="/static/main.css" />
+  <link rel="stylesheet" href="/static/admin.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Admin – Manage Documents</h1>
+  <div class="admin-layout">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-content">
+        <h1>⚙️ Document Management</h1>
+        <p>Upload and manage your knowledge base documents</p>
+      </div>
+      <nav class="header-nav">
+        <a href="/" class="nav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9,22 9,12 15,12 15,22"></polyline>
+          </svg>
+          Back to Chat
+        </a>
+      </nav>
+    </header>
 
-    <section class="card">
-      <h2>Upload Document</h2>
-      <form id="uploadForm">
-        <input type="file" id="fileInput" required />
-        <button type="submit">Upload</button>
-      </form>
-      <div id="uploadStatus"></div>
-    </section>
+    <!-- Main Content -->
+    <main class="admin-main">
+      <!-- Upload Section -->
+      <section class="upload-section">
+        <div class="section-header">
+          <h2>📤 Upload New Document</h2>
+          <p>Supported formats: PDF, TXT, MD, DOC, DOCX</p>
+        </div>
+        
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-content">
+            <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7,10 12,15 17,10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <h3>Drop files here or click to browse</h3>
+            <p>Maximum file size: 50MB</p>
+          </div>
+          <input type="file" id="fileInput" class="file-input" accept=".pdf,.txt,.md,.doc,.docx" multiple />
+        </div>
 
-    <section class="card">
-      <h2>Stored Documents</h2>
-      <button id="refreshBtn">Refresh</button>
-      <ul id="docList"></ul>
-    </section>
+        <div id="uploadStatus" class="upload-status"></div>
+        <div id="uploadProgress" class="upload-progress"></div>
+      </section>
+
+      <!-- Documents Section -->
+      <section class="documents-section">
+        <div class="section-header">
+          <h2>📚 Document Library</h2>
+          <div class="section-actions">
+            <button id="refreshBtn" class="refresh-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23,4 23,10 17,10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="documents-grid" id="docList">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading documents...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="admin-footer">
+      <div class="footer-content">
+        <p>Document Management System</p>
+        <div class="footer-stats" id="footerStats">
+          <span id="docCount">0 documents</span>
+        </div>
+      </div>
+    </footer>
   </div>
 
   <script src="/static/admin.js"></script>

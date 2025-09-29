@@ -194,27 +194,16 @@ async def search_documents(query: str, top_k: int = 5) -> Dict[str, Any]:
         return {"matches": []}
     
     try:
+        print(f"Starting search for query: {query}")
         q_emb = _embed_texts([query])[0]
         
         # Convert embedding to proper format for pgvector
         emb_str = "[" + ",".join(map(str, q_emb)) + "]"
-        print(f"Searching with embedding format: {emb_str[:50]}...")
+        print(f"Generated embedding with dimension: {len(q_emb)}")
 
         with psycopg.connect(DB_URL, row_factory=dict_row) as conn:
             with conn.cursor() as cur:
-                # First, verify pgvector extension is available
-                cur.execute("SELECT extname FROM pg_extension WHERE extname = 'vector';")
-                if not cur.fetchone():
-                    raise RuntimeError("pgvector extension not found")
-                
-                # Check if we have any data
-                cur.execute("SELECT COUNT(*) FROM doc_chunks;")
-                count = cur.fetchone()[0]
-                if count == 0:
-                    print("No document chunks found in database")
-                    return {"matches": []}
-                
-                print(f"Searching {count} document chunks...")
+                print("Executing similarity search...")
                 cur.execute(
                     """
                     SELECT d.id as doc_id, d.filename, c.chunk_index, c.chunk_text,
@@ -227,12 +216,15 @@ async def search_documents(query: str, top_k: int = 5) -> Dict[str, Any]:
                     (emb_str, emb_str, top_k),
                 )
                 rows = cur.fetchall()
-                print(f"Found {len(rows)} matching chunks")
+                print(f"Search completed - found {len(rows)} matching chunks")
+                
                 for r in rows:
                     r["doc_id"] = str(r["doc_id"])  # JSON serializable
+                
                 return {"matches": rows}
                 
     except Exception as e:
-        print(f"Search error: {e}")
-        # Return empty results instead of crashing
-        return {"matches": [], "error": str(e)}
+        print(f"Search failed - {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return {"matches": [], "error": f"{type(e).__name__}: {str(e)}"}

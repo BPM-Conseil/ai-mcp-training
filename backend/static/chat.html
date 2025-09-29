@@ -1,29 +1,64 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chatbot</title>
+  <title>Document Chat Assistant</title>
   <link rel="stylesheet" href="/static/main.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Chatbot</h1>
-
-    <section class="card">
-      <div class="chat">
-        <div id="messages"></div>
-        <form id="chatForm">
-          <input id="message" placeholder="Ask a question..." />
-          <button type="submit">Send</button>
-        </form>
+  <div class="app-layout">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <h1>📚 Document Chat Assistant</h1>
+        <p>Ask questions about your uploaded documents</p>
       </div>
-    </section>
+    </header>
 
-    <section class="card">
-      <h2>Sources</h2>
-      <div id="sources"></div>
-    </section>
+    <!-- Main Content -->
+    <main class="app-main">
+      <!-- Chat Section -->
+      <section class="chat-section">
+        <div class="chat-container">
+          <div id="messages" class="messages-area"></div>
+          <form id="chatForm" class="chat-form">
+            <div class="input-group">
+              <input 
+                id="message" 
+                type="text"
+                placeholder="Ask a question about your documents..." 
+                class="chat-input"
+                autocomplete="off"
+              />
+              <button type="submit" class="send-button">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                </svg>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Sources Section -->
+      <aside class="sources-section">
+        <div class="sources-container">
+          <h2 class="sources-title">📄 Sources</h2>
+          <div id="sources" class="sources-content">
+            <div class="no-sources">
+              No sources yet. Ask a question to see relevant document excerpts.
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <a href="/admin" class="admin-link">⚙️ Admin Panel</a>
+    </footer>
   </div>
 
   <script src="/static/chat.js"></script>

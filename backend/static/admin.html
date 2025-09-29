@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin - Documents</title>
+  <link rel="stylesheet" href="/static/main.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Admin – Manage Documents</h1>
+
+    <section class="card">
+      <h2>Upload Document</h2>
+      <form id="uploadForm">
+        <input type="file" id="fileInput" required />
+        <button type="submit">Upload</button>
+      </form>
+      <div id="uploadStatus"></div>
+    </section>
+
+    <section class="card">
+      <h2>Stored Documents</h2>
+      <button id="refreshBtn">Refresh</button>
+      <ul id="docList"></ul>
+    </section>
+  </div>
+
+  <script src="/static/admin.js"></script>
+</body>
+</html>

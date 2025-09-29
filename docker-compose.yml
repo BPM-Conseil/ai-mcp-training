@@ -1,0 +1,47 @@
+services:
+  db:
+    container_name: mcp-db
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-mcp}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mcppassword}
+      POSTGRES_DB: ${POSTGRES_DB:-mcpdb}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mcp-server:
+    container_name: mcp-server
+    build: ./mcp_server
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-mcp}:${POSTGRES_PASSWORD:-mcppassword}@db:5432/${POSTGRES_DB:-mcpdb}
+      EMBEDDING_MODEL_NAME: ${EMBEDDING_MODEL_NAME:-text-embedding-3-small}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "8765:8765"
+      - "5679:5679"
+
+  backend:
+    container_name: mcp-backend
+    build: ./backend
+    depends_on:
+      - mcp-server
+    environment:
+      MCP_BASE_URL: http://mcp-server:8765
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    ports:
+      - "8000:8000"
+      - "5678:5678"
+
+volumes:
+  db_data:

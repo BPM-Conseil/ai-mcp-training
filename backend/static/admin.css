@@ -32,6 +32,12 @@
   font-size: 0.95rem;
 }
 
+.header-nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .header-nav .nav-link {
   display: flex;
   align-items: center;
@@ -49,6 +55,28 @@
 .header-nav .nav-link:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #f56565;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+  font-size: 0.9rem;
+}
+
+.logout-btn:hover {
+  background: #e53e3e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
 }
 
 /* Main Content */

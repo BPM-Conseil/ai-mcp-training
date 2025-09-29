@@ -6,6 +6,7 @@ const uploadProgress = document.getElementById('uploadProgress');
 const docList = document.getElementById('docList');
 const refreshBtn = document.getElementById('refreshBtn');
 const docCount = document.getElementById('docCount');
+const logoutBtn = document.getElementById('logoutBtn');
 
 // File type icons mapping
 const fileIcons = {
@@ -63,6 +64,11 @@ async function fetchDocs() {
     `;
 
     const res = await fetch('/admin/documents');
+    if (res.status === 401) {
+      // Redirect to login page
+      window.location.href = '/admin/login';
+      return;
+    }
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     
     const data = await res.json();
@@ -147,6 +153,10 @@ async function deleteDocument(docId) {
 
   try {
     const res = await fetch(`/admin/documents/${docId}`, { method: 'DELETE' });
+    if (res.status === 401) {
+      window.location.href = '/admin/login';
+      return;
+    }
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     
     showStatus('Document deleted successfully', 'success');
@@ -196,6 +206,10 @@ async function uploadFiles(files) {
         body: formData
       });
       
+      if (res.status === 401) {
+        window.location.href = '/admin/login';
+        return;
+      }
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       
       const data = await res.json();
@@ -261,8 +275,31 @@ fileInput.addEventListener('change', (e) => {
   e.target.value = '';
 });
 
-// Refresh button
+// Logout functionality
+async function handleLogout() {
+  try {
+    const response = await fetch('/admin/logout', {
+      method: 'POST'
+    });
+    
+    if (response.ok) {
+      // Redirect to login page
+      window.location.href = '/admin/login';
+    } else {
+      console.error('Logout failed');
+      // Force redirect anyway
+      window.location.href = '/admin/login';
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
+    // Force redirect anyway
+    window.location.href = '/admin/login';
+  }
+}
+
+// Event listeners
 refreshBtn.addEventListener('click', fetchDocs);
+logoutBtn.addEventListener('click', handleLogout);
 
 // Make deleteDocument globally available
 window.deleteDocument = deleteDocument;

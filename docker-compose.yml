@@ -6,8 +6,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-mcp}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mcppassword}
       POSTGRES_DB: ${POSTGRES_DB:-mcpdb}
-    ports:
-      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -42,7 +40,7 @@ services:
       ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme123}
     ports:
-      - "8000:8000"
+      - "8889:8000"
 
 volumes:
   db_data:

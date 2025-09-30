@@ -84,7 +84,16 @@ async def http_delete_document(doc_id: str):
 async def http_search_documents(req: SearchRequest):
     return await search_documents(req.query, req.top_k)
 
+# ---- Run FastAPI + MCP ----
 if __name__ == "__main__":
-    # For now, just run the HTTP server
-    # FastMCP can be run separately or integrated differently
-    uvicorn.run("app:app", host="0.0.0.0", port=8765, reload=False)
+    async def main():
+        mcp.run()
+        
+        # Run FastAPI HTTP server on port 8765
+        uvicorn_task = asyncio.create_task(
+            uvicorn.run(app, host="0.0.0.0", port=8765, log_level="info")
+        )
+
+        await asyncio.gather(mcp_task, uvicorn_task)
+
+    asyncio.run(main())

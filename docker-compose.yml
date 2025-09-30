@@ -28,7 +28,7 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
     ports:
       - "8765:8765"
-      - "5679:5679"
+      - "8766:8766"
 
   backend:
     container_name: mcp-backend
@@ -43,7 +43,6 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme123}
     ports:
       - "8000:8000"
-      - "5678:5678"
 
 volumes:
   db_data:

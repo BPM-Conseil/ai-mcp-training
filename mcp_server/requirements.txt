@@ -1,6 +1,5 @@
 fastapi==0.112.2
 uvicorn[standard]==0.30.6
-fastmcp==0.1.0
 psycopg[binary]==3.2.1
 python-dotenv==1.0.1
 requests==2.31.0

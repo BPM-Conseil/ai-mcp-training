@@ -14,12 +14,15 @@ RUN apt-get update && apt-get install -y \
 # Install Python dependencies
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install fastmcp
 
 # Copy application code
 COPY . /app
 
-# Expose application port
+# Expose application ports
 EXPOSE 8765
+EXPOSE 8766
 
-# Production command
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8765"]
+# Production command - runs both FastAPI app and MCP server
+# CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port 8765 & fastmcp run mcp_server.py"]
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port 8765 & fastmcp run mcp_server.py --transport sse --port 8766 --host 0.0.0.0"]
